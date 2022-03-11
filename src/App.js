@@ -6,13 +6,15 @@ function App() {
   const [latestVolume, setLatestVolume] = useState(0);
 
   useEffect(() => {
-    fetchData().then((chartData) => {
+    const dateTime = Date.now();
+    const timestamp = Math.floor(dateTime / 1000);
+    fetchData(timestamp).then((chartData) => {
       setIsLoading(false);
       initChart(chartData);
       setLatestVolume(parseFloat(chartData.volumes[chartData.volumes.length - 1]).toFixed(2));
     });
     const timerID = setInterval(() => {
-      fetchData().then((chartData) => {
+      fetchData(timestamp).then((chartData) => {
         updateChart(chartData);
         setLatestVolume(parseFloat(chartData.volumes[chartData.volumes.length - 1]).toFixed(2));
       });
@@ -22,9 +24,9 @@ function App() {
     };
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (currentTime) => {
     let data = { index: [], price: [], volumes: [] };
-    let result = await callAPI("https://api.coingecko.com/api/v3/coins/woo-network/market_chart/range?vs_currency=usd&from=1604071697&to=1646926185");
+    let result = await callAPI(`https://api.coingecko.com/api/v3/coins/woo-network/market_chart/range?vs_currency=usd&from=1604071697&to=${currentTime}`);
     for (const item of result.total_volumes) {
       data.index.push(item[0]);
       data.volumes.push(item[1]);
@@ -41,7 +43,7 @@ function App() {
       yaxis: "y1",
       type: "scatter",
       mode: "lines+markers",
-      marker: { color: "blue", size: 3 },
+      marker: { color: "#0d6efd", size: 3 },
     };
     let layout = {
       autosize: true,
@@ -71,7 +73,7 @@ function App() {
       },
     };
     let config = { responsive: true };
-    let series = [trace_volumes];  // [trace_volumes, trace_price];
+    let series = [trace_volumes];
     // eslint-disable-next-line no-undef
     Plotly.newPlot("chart", series, layout, config);
   };
@@ -88,7 +90,7 @@ function App() {
     document.querySelector("#last-price").classList.add("animate__fadeIn");
   };
 
-  const internationalNumberFormat = new Intl.NumberFormat('en-US')
+  const internationalNumberFormat = new Intl.NumberFormat('en-US');
 
   return (
     <div className='px-3 mt-1'>
@@ -96,9 +98,10 @@ function App() {
         <h6 className='value animate__animated animate__flash animate__slow text-center text-primary'> loading ...</h6>
       ) : (
         <>
-          <h2 id='last-price' className='text-center text-primary animate__animated'>
-            Current 24hr Volume ${internationalNumberFormat.format(latestVolume)}
+          <h2 id='last-price' style={{ fontWeight: "bold" }} className='text-center animate__animated'>
+            Last 24hr Trading Volume:
           </h2>
+          <h3 style={{ textAlign: "center" }}>${internationalNumberFormat.format(latestVolume)}</h3>
           <div id='chart' className='p-0 m-0'></div>
         </>
       )}
