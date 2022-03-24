@@ -45,6 +45,31 @@ function App() {
       mode: "lines+markers",
       marker: { color: "#0d6efd", size: 3 },
     };
+    var selectorOptions = { //
+      buttons: [{
+        step: 'month',
+        stepmode: 'backward',
+        count: 1,
+        label: '1m'
+      }, {
+        step: 'month',
+        stepmode: 'backward',
+        count: 6,
+        label: '6m'
+      }, {
+        step: 'year',
+        stepmode: 'todate',
+        count: 1,
+        label: 'YTD'
+      }, {
+        step: 'year',
+        stepmode: 'backward',
+        count: 1,
+        label: '1y'
+      }, {
+        step: 'all',
+      }],
+    }; //
     let layout = {
       autosize: true,
       height: "100%",
@@ -53,11 +78,22 @@ function App() {
         r: 20,
         t: 35,
         pad: 3,
+        xaxis: {
+          rangeselector: selectorOptions,
+          rangeslider: {}
+        },
+        yaxis: {
+          fixedrange: true
+        }
       },
       showlegend: false,
       xaxis: {
         domain: [1, 1],
         anchor: "y2",
+        spikecolor: 'grey',
+        spikesides: true,
+        spikethickness: 1,
+
       },
       yaxis: {
         domain: [0.1, 1],
@@ -72,7 +108,7 @@ function App() {
         roworder: "bottom to top",
       },
     };
-    let config = { responsive: true };
+    let config = { responsive: true, scrollZoom: true };
     let series = [trace_volumes];
     // eslint-disable-next-line no-undef
     Plotly.newPlot("chart", series, layout, config);
@@ -98,10 +134,12 @@ function App() {
         <h6 className='value animate__animated animate__flash animate__slow text-center text-primary'> loading ...</h6>
       ) : (
         <>
-          <h2 id='last-price' style={{ fontWeight: "bold" }} className='text-center animate__animated'>
+          <h2 style={{ fontWeight: "bold" }} className='text-center'>
             Last 24hr Trading Volume:
           </h2>
-          <h3 style={{ textAlign: "center" }}>${internationalNumberFormat.format(latestVolume)}</h3>
+          <h3 id='last-price' className='text-center value animate__animated animate__flash animate__slow text-center text-primary'>
+            ${internationalNumberFormat.format(latestVolume)}
+          </h3>
           <div id='chart' className='p-0 m-0'></div>
         </>
       )}
