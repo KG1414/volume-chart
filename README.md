@@ -1,3 +1,5 @@
+Created a Cryptocurrency Volume chart for a user as they noticed on CoinGecko there is only charts for price and market cap.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
