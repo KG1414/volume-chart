@@ -1,6 +1,6 @@
 ## Cryptocurrency Volume Chart
 
-Created a Cryptocurrency Volume chart as a solution for a user as CoinGecko only shows charts for price and market cap.
+Created a Cryptocurrency Volume Chart as a solution for a user as CoinGecko only shows charts for price and market cap.
 
 https://crypto-volume-chart.herokuapp.com/
 
