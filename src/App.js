@@ -45,7 +45,8 @@ function App() {
       mode: "lines+markers",
       marker: { color: "#0d6efd", size: 3 },
     };
-    var selectorOptions = { //
+
+    var selectorOptions = {
       buttons: [{
         step: 'month',
         stepmode: 'backward',
@@ -69,7 +70,8 @@ function App() {
       }, {
         step: 'all',
       }],
-    }; //
+    };
+
     let layout = {
       autosize: true,
       height: "100%",
@@ -108,8 +110,10 @@ function App() {
         roworder: "bottom to top",
       },
     };
+
     let config = { responsive: true, scrollZoom: true };
     let series = [trace_volumes];
+
     // eslint-disable-next-line no-undef
     Plotly.newPlot("chart", series, layout, config);
   };
@@ -135,7 +139,7 @@ function App() {
       ) : (
         <>
           <h2 style={{ fontWeight: "bold" }} className='text-center'>
-            Last 24hr Trading Volume:
+            24hr Trading Volume:
           </h2>
           <h3 id='last-price' className='text-center value animate__animated animate__flash animate__slow text-center text-primary'>
             ${internationalNumberFormat.format(latestVolume)}
